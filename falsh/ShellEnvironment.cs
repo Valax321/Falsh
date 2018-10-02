@@ -23,6 +23,7 @@ namespace WhileFalseStudios.Falsh
             }
         }
 
+        private int m_windowSize = 40;
         private readonly List<string> m_args;
         private Process m_currentProcess;
         private EventWaitHandle m_processExitWaitHandle = new AutoResetEvent(false);
@@ -37,7 +38,7 @@ namespace WhileFalseStudios.Falsh
             { "history", new PrintHistoryCommand() },
             { "hsz", new SetHistoryBufferSizeCommand() },
             { "exit", new ExitCommand() },
-            {"help", new HelpCommand() },
+            { "help", new HelpCommand() },
         };
 
         public bool WantsToQuit { get; set; }
@@ -160,6 +161,30 @@ namespace WhileFalseStudios.Falsh
             if (!m_args.Contains("-s"))
             {
                 WriteColorLine("Falsh Shell (C) Andrew Castillo 2018", ConsoleColor.Yellow);
+
+                try
+                {
+                    int consoleWidth = Console.BufferWidth;
+                }
+                catch (Exception ex)
+                {
+                    WriteNormal("Your terminal does not support automatic detection of the column count.\nPlease enter the width of your terminal: ");
+                    bool valid = false;
+                    while (!valid)
+                    {
+                        string cin = Console.ReadLine();
+                        if (uint.TryParse(cin, out uint sz))
+                        {
+                            valid = true;
+                            m_windowSize = (int)sz;
+                        }
+                        else
+                        {
+                            WriteNormal($"Please enter a valid number between 0 and {int.MaxValue}: ");
+                        }
+                    }
+                }
+
                 WriteSeparator();
             }
         }
@@ -199,6 +224,11 @@ namespace WhileFalseStudios.Falsh
 
             if (!WantsToQuit)
             {
+                if ((ulong)m_historyBuffer.Count + 1 > HistoryBufferSize)
+                {
+                    m_historyBuffer.Dequeue();
+                }
+
                 m_historyBuffer.Enqueue(cmdInput); //Add it after we run in case the shell would exit, in which case we don't want to add that command to the history
             }
 
@@ -247,7 +277,6 @@ namespace WhileFalseStudios.Falsh
         {
             WriteErrorLine(e.Data);
         }
-
 
         #endregion
 
@@ -299,7 +328,17 @@ namespace WhileFalseStudios.Falsh
 
         private void WriteSeparator()
         {
-            for (int i = 0; i < Console.WindowWidth - 1; i++)
+            int csz = 0;
+            try
+            {
+                csz = Console.BufferWidth - 1;
+            }
+            catch
+            {
+                csz = m_windowSize;
+            }
+
+            for (int i = 0; i < csz; i++)
             {
                 WriteColor("-", ConsoleColor.DarkGray);
             }
