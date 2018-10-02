@@ -11,4 +11,20 @@
     <Copyright>Copyright (C) While False Studios 2018</Copyright>
     <Description>Because bash is too mainstream.</Description>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="BuiltInResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BuiltInResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="BuiltInResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BuiltInResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
 </Project>

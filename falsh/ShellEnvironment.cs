@@ -37,6 +37,7 @@ namespace WhileFalseStudios.Falsh
             { "history", new PrintHistoryCommand() },
             { "hsz", new SetHistoryBufferSizeCommand() },
             { "exit", new ExitCommand() },
+            {"help", new HelpCommand() },
         };
 
         public bool WantsToQuit { get; set; }
@@ -167,6 +168,7 @@ namespace WhileFalseStudios.Falsh
         {
             WriteColor($"{Environment.UserName}@falsh", ConsoleColor.Green);
             WriteColor($":{Directory.GetCurrentDirectory()}$ ", ConsoleColor.DarkGray);
+            Console.ForegroundColor = ConsoleColor.Gray;
             string cmdInput = Console.ReadLine();            
 
             //Tokenise it
@@ -311,7 +313,7 @@ namespace WhileFalseStudios.Falsh
 
         public static void WriteNormalLine(string line)
         {
-            Console.WriteLine(line);
+            WriteColorLine(line, ConsoleColor.Gray);
         }
 
         public static void WriteErrorLine(string line)
@@ -321,7 +323,7 @@ namespace WhileFalseStudios.Falsh
 
         public static void WriteNormal(string line)
         {
-            Console.Write(line);
+            WriteColor(line, ConsoleColor.Gray);
         }
 
         public static void WriteError(string line)
