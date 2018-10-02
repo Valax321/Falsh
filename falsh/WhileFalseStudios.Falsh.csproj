@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>WhileFalseStudios.Falsh</RootNamespace>
+    <AssemblyName>falsh</AssemblyName>
+    <PackageId>WhileFalseStudios.Falsh</PackageId>
+    <Authors>Andrew Castillo</Authors>
+    <Company>While False Studios</Company>
+    <Product>Falsh</Product>
+    <Copyright>Copyright (C) While False Studios 2018</Copyright>
+    <Description>Because bash is too mainstream.</Description>
+  </PropertyGroup>
+</Project>
