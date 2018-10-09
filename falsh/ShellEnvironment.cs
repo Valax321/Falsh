@@ -39,6 +39,7 @@ namespace WhileFalseStudios.Falsh
             { "hsz", new SetHistoryBufferSizeCommand() },
             { "exit", new ExitCommand() },
             { "help", new HelpCommand() },
+            { "mkdir", new MakeDirectoryCommand() },
         };
 
         public bool WantsToQuit { get; set; }
