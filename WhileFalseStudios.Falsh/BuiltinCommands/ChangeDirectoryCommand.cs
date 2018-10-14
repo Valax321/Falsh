@@ -17,7 +17,7 @@ namespace WhileFalseStudios.Falsh.BuiltinCommands
             else
             {
                 string resolvedPathName = Path.GetFullPath(args[0]);
-                if (!resolvedPathName.EndsWith(Path.DirectorySeparatorChar)) //Add a / on if we didn't do one.
+                if (!resolvedPathName.EndsWith(Path.DirectorySeparatorChar.ToString())) //Add a / on if we didn't do one.
                 {
                     resolvedPathName += Path.DirectorySeparatorChar;
                 }

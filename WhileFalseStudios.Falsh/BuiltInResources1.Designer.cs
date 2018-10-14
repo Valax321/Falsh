@@ -61,7 +61,14 @@ namespace WhileFalseStudios.Falsh {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Built-in command list for falsh. Use &apos;help &lt;command&gt;&apos; for more specific help.
+        ///    cd &lt;path&gt;: change the current directory to the specified folder.
+        ///    pwd: prints the current directory.
+        ///    dir: lists the contents of the current directory.
+        ///    cls: clears the screen.
+        ///    help [command]: if no command specified, prints this help screen. If a command is given, gives more detailed help for that command.
+        ///    history: prints all items stored in the shell&apos;s history.
+        ///    hsz [size]: if no size given, prints [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string HelpMessage {
             get {

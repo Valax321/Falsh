@@ -12,7 +12,7 @@ namespace WhileFalseStudios.Falsh.BuiltinCommands
         {
             foreach (var entry in Directory.EnumerateFileSystemEntries(Directory.GetCurrentDirectory()))
             {
-                var f = Path.GetRelativePath(Directory.GetCurrentDirectory(), entry);
+                var f = PathUtils.MakeRelativePath(Directory.GetCurrentDirectory(), entry);
                 ConsoleColor printColor = Console.ForegroundColor;
                 FileAttributes attr = File.GetAttributes(entry);
                 if (attr.HasFlag(FileAttributes.Directory)) //Is a directory

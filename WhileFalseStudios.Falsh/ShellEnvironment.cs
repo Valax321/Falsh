@@ -142,7 +142,7 @@ namespace WhileFalseStudios.Falsh
                     using (var sw = new StreamWriter(fs))
                     {
                         WriteNormalLine("Saving session history...");
-                        sw.WriteLine(HistoryBufferSize);
+                        sw.WriteLine(HistoryBufferSize);                        
                         while (m_historyBuffer.TryDequeue(out string result))
                         {
                             sw.WriteLine(result);
@@ -167,7 +167,7 @@ namespace WhileFalseStudios.Falsh
                 {
                     int consoleWidth = Console.BufferWidth;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     WriteNormal("Your terminal does not support automatic detection of the column count.\nPlease enter the width of your terminal: ");
                     bool valid = false;
@@ -238,7 +238,7 @@ namespace WhileFalseStudios.Falsh
 
         public void RunProgram(string appPath, params string[] args)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo(appPath, string.Join(' ', args));
+            ProcessStartInfo startInfo = new ProcessStartInfo(appPath, string.Join(" ", args));
             startInfo.CreateNoWindow = true;
             startInfo.UseShellExecute = false;
             startInfo.WorkingDirectory = Directory.GetCurrentDirectory();
