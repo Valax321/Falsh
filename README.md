@@ -1,5 +1,5 @@
 # Falsh
-Falsh is a bash-like shell for Windows, although it should (in theory) work on macOS and Linux too. It uses .NET Core 2.1 and is written in C#.
+Falsh is a bash-like shell for Windows, although it should (in theory) work on macOS and Linux too. It uses .NET Framework 4.7.1 and is written in C#.
 
 It is intended to eventually be cross-platform, compiled to a native executable using [CoreRT](https://github.com/dotnet/corert). For now it must be run using `dotnet falsh.dll` so it is not the most convenient to use.
 
