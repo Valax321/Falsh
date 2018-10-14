@@ -42,14 +42,21 @@ namespace WhileFalseStudios.Falsh
             }
             else
             {
-                var path = ctx.Environment.FindApplicationInPath(cmd);
-                if (string.IsNullOrEmpty(path))
+                try
                 {
-                    ShellEnvironment.WriteErrorLine($"{cmd} is not a built-in command and could not be found on the PATH or in the current directory.");
+                    var path = ctx.Environment.FindApplicationInPath(cmd);
+                    if (string.IsNullOrEmpty(path))
+                    {
+                        ShellEnvironment.WriteErrorLine($"{cmd} is not a built-in command and could not be found on the PATH or in the current directory.");
+                    }
+                    else
+                    {
+                        ctx.Environment.RunProgram(cmd, m_args.ToArray());
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ctx.Environment.RunProgram(cmd, m_args.ToArray());
+                    ShellEnvironment.WriteErrorLine($"File error: {ex.Message}");
                 }
             }
         }

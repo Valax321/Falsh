@@ -36,6 +36,10 @@ namespace WhileFalseStudios.Falsh
             {
                 if (tokens[i] == "|")
                 {
+                    if (commandArgs.Count == 0)
+                    {
+                        throw new ParseException(typeof(CommandToken), "Command must have 1 or more arguments");
+                    }
                     List<string> toks = commandArgs.ToList(); //HACK for list copy
                     parsedTokens.Add(new CommandToken(toks));
                     commandArgs.Clear();

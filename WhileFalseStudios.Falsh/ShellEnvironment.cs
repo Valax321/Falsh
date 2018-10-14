@@ -302,7 +302,7 @@ namespace WhileFalseStudios.Falsh
             List<string> pathList = path.Split(PathSeperatorChar).ToList();
             pathList.Add(Directory.GetCurrentDirectory());
             foreach (var p in pathList)
-            {                
+            {
                 string app = Path.Combine(p, GetPlatformNativeProgramExt(appName));
                 if (File.Exists(app))
                 {
@@ -318,6 +318,11 @@ namespace WhileFalseStudios.Falsh
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) //On windows we want to add .exe if we don't specify so we are really sure of what we're running.
             {
+                if (Path.GetInvalidFileNameChars().ToList().Any((char c) => { return appName.Contains(c); }))
+                {
+                    throw new Exception("Not a valid file name");
+                }
+
                 if (Path.GetExtension(appName) != "") return appName;
                 else return $"{Path.GetFileNameWithoutExtension(appName)}.exe";
             }
