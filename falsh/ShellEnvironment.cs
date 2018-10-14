@@ -81,9 +81,9 @@ namespace WhileFalseStudios.Falsh
             }
         }
 
-        private bool BuiltInCommandExists(string cmd) => m_builtinCommands.ContainsKey(cmd);
+        public bool BuiltInCommandExists(string cmd) => m_builtinCommands.ContainsKey(cmd);
 
-        private void ExecBuiltInCommand(string cmd, params string[] args)
+        public void ExecBuiltInCommand(string cmd, params string[] args)
         {
             if (BuiltInCommandExists(cmd))
             {
@@ -195,33 +195,24 @@ namespace WhileFalseStudios.Falsh
             WriteColor($"{Environment.UserName}@falsh", ConsoleColor.Green);
             WriteColor($":{Directory.GetCurrentDirectory()}$ ", ConsoleColor.DarkGray);
             Console.ForegroundColor = ConsoleColor.Gray;
-            string cmdInput = Console.ReadLine();            
+            string cmdInput = Console.ReadLine();
 
             //Tokenise it
-            List<string> tokens = cmdInput.Split(' ', options: StringSplitOptions.RemoveEmptyEntries).ToList();
+            CommandInterpreter interpreter = new CommandInterpreter(cmdInput);
+            try
+            {
+                interpreter.Parse();
+            }
+            catch (ParseException ex)
+            {
+                WriteErrorLine($"Parse error: {ex.Message}.");
+                return;
+            }
 
-            if (tokens.Count == 0) //Nothing to execute
+            if (interpreter.ParsedTokens.Count == 0) //Nothing to execute
                 return;
 
-            string cmd = tokens[0];
-            tokens.RemoveAt(0);
-
-            if (BuiltInCommandExists(cmd)) //Run built-in command instead if it exists.
-            {
-                ExecBuiltInCommand(cmd, tokens.ToArray());
-            }
-            else
-            {
-                string realAppPath = FindApplicationInPath(cmd);
-                if (realAppPath == string.Empty)
-                {
-                    WriteErrorLine($"{cmd} is not a built-in command and could not be found on the PATH or in the current directory.");
-                }
-                else
-                {
-                    RunProgram(realAppPath, tokens.ToArray());
-                }
-            }
+            RunTokenisedCommandBuffer(interpreter);
 
             if (!WantsToQuit)
             {
@@ -232,11 +223,20 @@ namespace WhileFalseStudios.Falsh
 
                 m_historyBuffer.Enqueue(cmdInput); //Add it after we run in case the shell would exit, in which case we don't want to add that command to the history
             }
-
-            WriteSeparator();
         }
 
-        private void RunProgram(string appPath, params string[] args)
+        private void RunTokenisedCommandBuffer(CommandInterpreter interpreter)
+        {
+            ShellContext ctx = new ShellContext(this);
+
+            foreach (var token in interpreter.ParsedTokens)
+            {
+                token.Execute(ctx);
+                WriteSeparator();
+            }
+        }
+
+        public void RunProgram(string appPath, params string[] args)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo(appPath, string.Join(' ', args));
             startInfo.CreateNoWindow = true;
@@ -296,7 +296,7 @@ namespace WhileFalseStudios.Falsh
 
         #region Util
 
-        private string FindApplicationInPath(string appName)
+        public string FindApplicationInPath(string appName)
         {
             string path = Environment.GetEnvironmentVariable("PATH");
             List<string> pathList = path.Split(PathSeperatorChar).ToList();
