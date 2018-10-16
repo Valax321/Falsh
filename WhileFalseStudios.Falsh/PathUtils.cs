@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-
-namespace WhileFalseStudios.Falsh
+﻿namespace WhileFalseStudios.Falsh
 {
     public class PathUtils
     {
@@ -17,7 +10,10 @@ namespace WhileFalseStudios.Falsh
             // this is the easy case.  The file is inside of the working directory.
             if (fullPath.StartsWith(workingDirectory))
             {
-                return fullPath.Substring(workingDirectory.Length + 1);
+                // if you use workingDirectory.Length + 1, you don't see the leading backslash in non-root directories, but you will lose a leading char on
+                // some directories/file names. This isn't, probably, an ideal solution, but it works.
+                // hey-mikey, 10/16/2018
+                return fullPath.Substring(workingDirectory.Length).Replace("\\", "").Trim();
             }
 
             // the hard case has to back out of the working directory
