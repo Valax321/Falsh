@@ -40,6 +40,7 @@ namespace WhileFalseStudios.Falsh
             { "exit", new ExitCommand() },
             { "help", new HelpCommand() },
             { "mkdir", new MakeDirectoryCommand() },
+            { "print", new PrintFileCommand() },
         };
 
         public bool WantsToQuit { get; set; }

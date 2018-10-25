@@ -15,7 +15,7 @@ namespace WhileFalseStudios.Falsh
 
         public void Execute(ShellContext ctx)
         {
-
+            ShellEnvironment.WriteNormalLine($"STUB: Wrote stdout into {Value}");
         }
     }
 }

@@ -24,17 +24,11 @@ namespace WhileFalseStudios.Falsh
             List<IParsedToken> parsedTokens = new List<IParsedToken>();
 
             var tokens = m_tokeniser.GetTokens();
-            if (tokens.Count > 1 && tokens[1] == ">")
-            {
-                string inFile = tokens[0];
-                tokens.RemoveRange(0, 2); //Remove the 'file > ' section from the statement
-                parsedTokens.Add(new InPipeToken(inFile));
-            }
 
             List<string> commandArgs = new List<string>();
             for (int i = 0; i < tokens.Count; i++)
             {
-                if (tokens[i] == "|")
+                if (tokens[i] == "|") //Command pipelines
                 {
                     if (commandArgs.Count == 0)
                     {
@@ -44,28 +38,35 @@ namespace WhileFalseStudios.Falsh
                     parsedTokens.Add(new CommandToken(toks));
                     commandArgs.Clear();
                 }
-                else if (tokens[i] == ">")
+                else if (tokens[i] == ">") // Out pipes
                 {
                     if (tokens.Count - 1 == i + 1)
                     {
-                        parsedTokens.Add(new OutPipeToken(tokens[i + 1]));
-
+                        //This needs to go first so that the command is placed BEFORE the out pipe
                         List<string> toks = commandArgs.ToList(); //HACK for list copy
                         parsedTokens.Add(new CommandToken(toks));
                         commandArgs.Clear();
+
+                        parsedTokens.Add(new OutPipeToken(tokens[i + 1]));
+                        i++; //Skips the next token since we already pulled it in as part of the outpipe (the file.txt bit)
                     }
-                    else
+                    else if (tokens.Count - 1 < i + 1) //If we have too few tokens to properly parse
                     {
                         throw new ParseException(typeof(OutPipeToken), "Output pipe must provide a file to write stdout to");
                     }
+                    else // We have too many tokens after this. It is not going to be the last token to appear in the expression
+                    {
+                        throw new ParseException(typeof(OutPipeToken), "Output pipe may only appear as the last expression in a command");
+                    }
                 }
-                else
+                else //Normal command, add to arglist.
                 {
                     commandArgs.Add(tokens[i]);
                     continue;
                 }                
             }
 
+            // Adds any remaining contents of the arglist to its own command token, without this the last command in the expression would be lost.
             if (commandArgs.Count > 0)
             {
                 List<string> toks = commandArgs.ToList(); //HACK for list copy
@@ -73,9 +74,8 @@ namespace WhileFalseStudios.Falsh
                 commandArgs.Clear();
             }
 
-            var index = from token in parsedTokens where token is OutPipeToken select parsedTokens.IndexOf(token); //Checking if the last token only is a OutPipeToken
-            if (index.Count() == 0 || (index.Count() == 1 && index.First() == parsedTokens.Count - 1)) ParsedTokens = parsedTokens;
-            else throw new ParseException(parsedTokens[index.First()].GetType(), "Output pipe may only appear as the last expression in a command");
+            //We no longer need to check if the last token is an OutPipeToken manually, as the code above will check as it parses the OutPipeToken.
+            ParsedTokens = parsedTokens;
         }
     }
 

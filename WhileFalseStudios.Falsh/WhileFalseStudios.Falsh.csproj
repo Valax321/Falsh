@@ -51,6 +51,7 @@
     <Compile Include="BuiltinCommands\IBuiltInCommand.cs" />
     <Compile Include="BuiltinCommands\MakeDirectoryCommand.cs" />
     <Compile Include="BuiltinCommands\PrintDirectoryContentsCommand.cs" />
+    <Compile Include="BuiltinCommands\PrintFileCommand.cs" />
     <Compile Include="BuiltinCommands\PrintHistoryCommand.cs" />
     <Compile Include="BuiltinCommands\PrintWorkingDirCommand.cs" />
     <Compile Include="BuiltinCommands\SetHistoryBufferSizeCommand.cs" />
