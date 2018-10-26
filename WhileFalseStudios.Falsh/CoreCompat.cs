@@ -22,6 +22,25 @@ namespace WhileFalseStudios.Falsh
             sb.Remove(sb.Length - 1, 1);
         }
 
+        public static void AppendJoin(this StringBuilder sb, string separator, IEnumerable<string> args)
+        {
+            foreach (var a in args)
+            {
+                sb.Append(a);
+                sb.Append(separator);
+            }
+
+            sb.Remove(sb.Length - separator.Length, separator.Length);
+        }
+
+        public static void AppendJoin(this StringBuilder sb, IEnumerable<string> args)
+        {
+            foreach (var a in args)
+            {
+                sb.Append(a);
+            }
+        }
+
         public static bool TryDequeue<T>(this Queue<T> queue, out T value)
         {
             try

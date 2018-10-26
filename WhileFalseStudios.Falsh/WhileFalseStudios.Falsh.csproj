@@ -55,6 +55,8 @@
     <Compile Include="BuiltinCommands\PrintHistoryCommand.cs" />
     <Compile Include="BuiltinCommands\PrintWorkingDirCommand.cs" />
     <Compile Include="BuiltinCommands\SetHistoryBufferSizeCommand.cs" />
+    <Compile Include="BuiltinCommands\Strings\StringConcatenateCommand.cs" />
+    <Compile Include="BuiltinCommands\Strings\StringJoinCommand.cs" />
     <Compile Include="BuiltInResources1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

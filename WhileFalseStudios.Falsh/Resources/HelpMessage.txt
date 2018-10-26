@@ -1,4 +1,7 @@
 Built-in command list for falsh. Use 'help <command>' for more specific help.
+<> is a required argument, [] is an optional argument.
+
+---- GENERAL ----
     cd <path>: change the current directory to the specified folder.
     pwd: prints the current directory.
     dir: lists the contents of the current directory.
@@ -7,3 +10,9 @@ Built-in command list for falsh. Use 'help <command>' for more specific help.
     history: prints all items stored in the shell's history.
     hsz [size]: if no size given, prints the current history buffer size. If a number > 0 is given, sets the history buffer to this size.
     exit: saves the history buffer to disk and exits the shell.
+    mkdir <dirname>: creates a directory with the specified name.
+    print <file>: prints the contents of the given file to stdout.
+
+---- STRING MANIPULATION ----
+    strcat [args]: concatenates all arguments together and prints the result.
+    strjoin <separator> [args]: joins all arguments together with the given separator and prints the result.
