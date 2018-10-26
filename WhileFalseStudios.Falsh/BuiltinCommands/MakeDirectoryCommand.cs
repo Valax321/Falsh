@@ -5,6 +5,7 @@ using System.Text;
 
 namespace WhileFalseStudios.Falsh.BuiltinCommands
 {
+    [Command("mkdir")]
     class MakeDirectoryCommand : IBuiltInCommand
     {
         public void Exec(params string[] args)

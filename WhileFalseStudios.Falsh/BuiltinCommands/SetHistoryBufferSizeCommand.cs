@@ -4,6 +4,7 @@ using System.Text;
 
 namespace WhileFalseStudios.Falsh.BuiltinCommands
 {
+    [Command("hsz")]
     class SetHistoryBufferSizeCommand : IBuiltInCommand
     {
         public void Exec(params string[] args)

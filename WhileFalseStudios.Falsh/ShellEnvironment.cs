@@ -29,19 +29,7 @@ namespace WhileFalseStudios.Falsh
         private EventWaitHandle m_processExitWaitHandle = new AutoResetEvent(false);
         private Queue<string> m_historyBuffer = new Queue<string>();
         public ulong HistoryBufferSize { get; set; } = 20;
-        private Dictionary<string, IBuiltInCommand> m_builtinCommands = new Dictionary<string, IBuiltInCommand>()
-        {
-            { "cd", new ChangeDirectoryCommand() },
-            { "pwd", new PrintWorkingDirCommand() },
-            { "dir", new PrintDirectoryContentsCommand() },
-            { "cls", new ClearScreenCommand() },
-            { "history", new PrintHistoryCommand() },
-            { "hsz", new SetHistoryBufferSizeCommand() },
-            { "exit", new ExitCommand() },
-            { "help", new HelpCommand() },
-            { "mkdir", new MakeDirectoryCommand() },
-            { "print", new PrintFileCommand() },
-        };
+        private Dictionary<string, IBuiltInCommand> m_builtinCommands = new Dictionary<string, IBuiltInCommand>();
 
         public bool WantsToQuit { get; set; }
 
@@ -64,7 +52,7 @@ namespace WhileFalseStudios.Falsh
         {
             Instance = this;
             m_args = args.ToList();
-            //ConstructBuiltInCommandList();
+            ConstructBuiltInCommandList();
         }
 
         #region Built-in Commands
@@ -74,9 +62,8 @@ namespace WhileFalseStudios.Falsh
             var commands = ReflectionUtility.GetTypesWithAttribute<CommandAttribute>(Assembly.GetExecutingAssembly());
             foreach (var command in commands)
             {
-                if (command.Key.IsAssignableFrom(typeof(IBuiltInCommand)))
+                if (command.Key.GetInterfaces().Contains(typeof(IBuiltInCommand)))
                 {
-                    Console.WriteLine($"Found command: {command.Value.Name}");
                     m_builtinCommands.Add(command.Value.Name, Activator.CreateInstance(command.Key) as IBuiltInCommand);
                 }
             }
